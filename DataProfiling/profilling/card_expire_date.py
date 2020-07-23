@@ -21,7 +21,7 @@ def expire_date(param_dict=None):
     ## Минимальный процент совпадения по контрольному числу
     min_conformance_percent = 2.0
     ## Базовая процентная оценка по  метаданным
-    mdata_match_percent = 45.0
+    mdata_match_percent = 35.0
     ## Количество совпадений по данным
     count_match = 0
     ## Проверка на входные значения функции
@@ -36,6 +36,6 @@ def expire_date(param_dict=None):
         if len(match_values_list) != 0:
             count_match += 1
     percentage = round((count_match * 100) / len(values_list), 1)
-    return {'dmn': 'DMN_CARD_EXPIRE_DATE', 'percent': percent_diff_card_exp_dt(percentage, mdata_match_percent if md_pattern_card_exp_dt(
-        field_name) else 0)} if percentage > min_conformance_percent else {'dmn': 'DMN_CARD_EXPIRE_DATE', 'percent': 0.0}
-
+    return {'dmn': 'DMN_CARD_EXPIRE_DATE',
+            'percent': percent_diff_card_exp_dt(percentage, mdata_match_percent)} if md_pattern_card_exp_dt(
+        field_name) and percentage > min_conformance_percent else {'dmn': 'DMN_CARD_EXPIRE_DATE', 'percent': 0.0}

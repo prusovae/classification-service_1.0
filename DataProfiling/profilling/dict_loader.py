@@ -4,6 +4,8 @@ logger = logging.getLogger(__name__)
 logger.info("модуль запустился")
 dict_path = os.path.join('data', 'dict')
 
+data_types_path = os.path.join(dict_path, 'data_type.csv')
+
 acct_chart_path = os.path.join(dict_path, 'acct_chart.csv')
 currency_code_path = os.path.join(dict_path, 'currency_code.csv')
 postal_code_path = os.path.join(dict_path, 'postal_code.csv')
@@ -30,6 +32,8 @@ unisex_last_names_eng_path = os.path.join(dict_path, 'unisex_last_names_eng.csv'
 
 phone_numbers_path = os.path.join(dict_path, 'phone_numbers.csv')
 postal_codes_path = os.path.join(dict_path, 'postal_code.csv')
+
+data_types_map = dict()
 
 postal_codes = set()
 acct_charts = set()
@@ -61,6 +65,12 @@ women_last_names = set()
 women_last_names_eng = set()
 unisex_last_names = set()
 unisex_last_names_eng = set()
+
+
+def load_data_types(file_path):
+    with open(file_path, encoding='utf-8') as file:
+        for line in file:
+            data_types_map[line.split(":")[1].strip()] = line.split(":")[0].strip()
 
 
 def load_acct_chart(file_path):
@@ -194,6 +204,7 @@ def load_city():
 
 
 def load_datamasking_dicts():
+    load_data_types(data_types_path)
     load_first_names()
     load_first_names_eng()
     load_last_names()
@@ -209,5 +220,6 @@ def load_datamasking_dicts():
     load_country()
     load_region()
     load_city()
+
 
 load_datamasking_dicts()

@@ -7,8 +7,7 @@ from profilling.is_char_digit_data import is_char_digit_data
 from profilling.is_date_data import is_date_data
 from profilling.is_char_data import is_char_data
 from profilling.is_text_data import is_text_data
-
-
+from profilling.dict_loader import data_types_map
 
 
 def master_route_func(param_dict=None):
@@ -26,31 +25,31 @@ def master_route_func(param_dict=None):
         digit_counter = 0
         counter = 0
         for value in values_list:
-            counter+=1
+            counter += 1
             for junk_char in "#%$@ *.!&/": value = value.replace(junk_char, '')
             if value.isdigit():
-                digit_counter+=1
+                digit_counter += 1
         result = round(digit_counter / counter * 100)
         logger.debug('is_digit result = %s', result)
         if result > 90:
             return True
         return False
 
-
     def is_date(values_list):
-        pattern_date = '\\b(\d{1,2}[-./]\d{1,2}[-./]\d{2,4})|(\d{2,4}[-./]\d{1,2}[-./]\d{1,2})\\b'
+        pattern_date = '(^\d{1,2}[-./]\d{1,2}[-./]\d{2,4}$)|' \
+                       '(^\d{2,4}[-./]\d{1,2}[-./]\d{1,2}$)|' \
+                       '(^\d{1,2}[/]\d{2}$)|(^\d{1,2}[/]\d{4}$)'
         date_counter = 0
         value_counter = 0
         for value in values_list:
-            value_counter+=1
-            if bool(re.findall(pattern_date, value.lower()))  == True:
-                date_counter+=1
+            value_counter += 1
+            if bool(re.findall(pattern_date, value.lower().strip()))  == True:
+                date_counter += 1
         result = round(date_counter / value_counter * 100)
         logger.debug('is_date result = %s', result)
         if result > 50:
             return True
         return False
-
 
     def is_text(values_list):
         for value in values_list:
@@ -58,7 +57,6 @@ def master_route_func(param_dict=None):
                 return True
         logger.debug('is_text result = text detected')
         return False
-
 
     def is_char(values_list):
         counter = 0
@@ -73,12 +71,14 @@ def master_route_func(param_dict=None):
         if result > 90:
             return True
 
-
-    if field_type == 'int':
+    field_type = (lambda data_type: data_types_map.get(data_type.upper(), 'UNKNOWN'))(field_type)
+    if field_type == 'UNKNOWN':
         result = {'dmn': 'DMN_NO_PND', 'percent': 0.0}
-    if field_type == 'date':
+    if field_type == 'BINARY':
+        result = {'dmn': 'DMN_BINARY', 'percent': 100.0}
+    if field_type == 'DATE':
         result = is_date_data(param_dict)
-    if field_type == 'text':
+    if field_type == 'STRING' or 'NUMBER':
         if is_date(values_list):
             result = (is_date_data(param_dict))
         else:
@@ -94,14 +94,3 @@ def master_route_func(param_dict=None):
                         result = (is_char_digit_data(param_dict))
     logger.info("result = %s", result)
     return result
-
-
-
-dict__ ={
-    "name": "ff",
-    "size": "field_size",
-    "type": "text",
-    "data": ["127.0.0.1","127.0.0.1","10.106.11.25"]
-}
-
-print(master_route_func(dict__))

@@ -11,8 +11,8 @@ def md_pattern_birth_date(fld_name=None):
 ## Функция токенизации
 def tokenize_birth_date(value=None):
     return [match_value for match_value in re.findall(
-        '\\b(\d{1,2}[-./]\d{1,2}[-./]\d{2,4})|'
-        '(\d{2,4}[-./]\d{1,2}[-./]\d{1,2})\\b', value.lower())] if value else []
+        '\\b(\d{1,2}[-./]\d{1,2}[-./]\d{2,4})\\b|'
+        '\\b(\d{2,4}[-./]\d{1,2}[-./]\d{1,2})\\b', value.lower())] if value else []
 
 
 def percent_diff_birth_date(percent, diff):
@@ -23,7 +23,7 @@ def birth_date(param_dict=None):
     ## Минимальный процент совпадения по контрольному числу
     min_conformance_percent = 2.0
     ## Базовая процентная оценка по  метаданным
-    mdata_match_percent = 75.0
+    mdata_match_percent = 35.0
     ## Количество совпадений по данным
     count_match = 0
 
@@ -39,5 +39,5 @@ def birth_date(param_dict=None):
         if len(match_values_list) != 0:
             count_match += 1
     percentage = round((count_match * 100) / len(values_list), 1)
-    return {'dmn': 'DMN_BIRGHT_DATE', 'percent': percent_diff_birth_date(percentage, mdata_match_percent)} if md_pattern_birth_date(
-                field_name) and percentage > min_conformance_percent else {'dmn': 'DMN_BIRGHT_DATE', 'percent': 0.0}
+    return {'dmn': 'DMN_BIRTH_DATE', 'percent': percent_diff_birth_date(percentage, mdata_match_percent)} if md_pattern_birth_date(
+                field_name) and percentage > min_conformance_percent else {'dmn': 'DMN_BIRTH_DATE', 'percent': 0.0}
