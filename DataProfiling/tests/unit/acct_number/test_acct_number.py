@@ -1,5 +1,5 @@
 import pytest
-from profilling.account_number import acct_number
+from DataProfiling.profilling.account_number import acct_number
 
 
 @pytest.fixture()

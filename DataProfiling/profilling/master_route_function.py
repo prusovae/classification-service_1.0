@@ -73,7 +73,7 @@ def master_route_func(param_dict=None):
 
     field_type = (lambda data_type: data_types_map.get(data_type.upper(), 'UNKNOWN'))(field_type)
     if field_type == 'UNKNOWN':
-        result = {'dmn': 'DMN_NO_PND', 'percent': 0.0}
+        result = {'dmn': 'NO_PND', 'percent': 0.0}
     if field_type == 'BINARY':
         result = {'dmn': 'DMN_BINARY', 'percent': 100.0}
     if field_type == 'DATE':

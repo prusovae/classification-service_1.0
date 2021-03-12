@@ -44,4 +44,4 @@ def middle_name(param_dict=None):
             if is_middle_name_value(match_values_list):
                 count_match += 1
     percentage = round((count_match * 100) / len(values_list), 1)
-    return {'dmn': 'DMN_MIDDLE_NAME', 'percent': percent_diff_first_name(percentage, mdata_match_percent)} if percentage > min_conformance_percent else {'dmn': 'DMN_MIDDLE_NAME', 'percent': 0.0}
+    return {'dmn': 'DMN_PATRONYMIC', 'percent': percent_diff_first_name(percentage, mdata_match_percent)} if percentage > min_conformance_percent else {'dmn': 'DMN_PATRONYMIC', 'percent': 0.0}

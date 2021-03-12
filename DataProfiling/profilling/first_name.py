@@ -15,6 +15,15 @@ def is_first_name_value(value):
     value = value.replace(',', '')
     value = value.replace('.', '')
     value = value.lower().split()
+
+    for v in value:
+        for f in first_names:
+            if v in f:
+                print(v)
+
+    # print(value, first_names)
+
+
     return True if value and [value for value in value if value in first_names] else False
 
 
@@ -43,5 +52,16 @@ def first_name(param_dict=None):
         if match_values_list:
             if is_first_name_value(match_values_list):
                 count_match += 1
+    print('count_match',count_match)
     percentage = round((count_match * 100) / len(values_list), 1)
-    return {'dmn': 'DMN_FIRST_NAME', 'percent': percent_diff_first_name(percentage, mdata_match_percent)} if percentage > min_conformance_percent else {'dmn': 'DMN_FIRST_NAME', 'percent': 0.0}
+    print('percentage',percentage)
+    print({'dmn': 'DMN_FIRST_NAME'
+           , 'percent': percent_diff_first_name(percentage, mdata_match_percent)})
+
+    return {'dmn': 'DMN_FIRST_NAME',
+            'percent': percent_diff_first_name(percentage,
+                                               mdata_match_percent)} \
+        if percentage > min_conformance_percent \
+        else {'dmn': 'DMN_FIRST_NAME', 'percent': 0.0}
+
+

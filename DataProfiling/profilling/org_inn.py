@@ -54,12 +54,14 @@ def org_inn(param_dict=None):
         match_values_list = tokenize(value)
         for match_values in match_values_list:
             if match_values_list:
-                if not bs_values_check_org_inn(match_values) and is_org_inn_value(match_values):
+                if not bs_values_check_org_inn(match_values) \
+                        and is_org_inn_value(match_values):
                     count_match += 1
     percentage = round((count_match * 100) / len(values_list), 1)
-    return {'dmn': 'DMN_ORG_INN', 'percent': percent_diff_org_inn(percentage, mdata_match_percent)} \
+    return {'dmn': 'DMN_INN', 'percent': percent_diff_org_inn(
+        percentage, mdata_match_percent)} \
            if percentage > min_conformance_percent \
-           else {'dmn': 'DMN_ORG_INN', 'percent': 0.0}
+           else {'dmn': 'DMN_INN', 'percent': 0.0}
 
 
 

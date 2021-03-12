@@ -49,7 +49,8 @@ def acct_number(param_dict=None):
                 if is_acct_number_value(match_values):
                     count_match += 1
     percentage = round((count_match * 100) / len(values_list), 1)
-    return {'dmn': 'DMN_ACCT_NUMBER', 'percent': percent_diff_acct_number(percentage, mdata_match_percent)} \
+    return {'dmn': 'DMN_ACCOUNT', 'percent':
+        percent_diff_acct_number(percentage, mdata_match_percent)} \
            if percentage > min_conformance_percent \
-           else {'dmn': 'DMN_ACCT_NUMBER', 'percent': 0.0}
+           else {'dmn': 'DMN_ACCOUNT', 'percent': 0.0}
 

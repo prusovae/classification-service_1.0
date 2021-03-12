@@ -44,10 +44,12 @@ def is_digit_data(param_dict=None):
 
 
     ## Получение списка ключей доменов с максимальным процентом совпадения.
-    ## Если таких ключей больше одного (процент совпадения одинаков ), то берётся тот, у которого больше ключ
-    dmn_out = [key for key, value in dmn_dict.items() if value == max(dmn_dict.values())]
+    ## Если таких ключей больше одного (процент совпадения одинаков )
+    # , то берётся тот, у которого больше ключ
+    dmn_out = [key for key, value in dmn_dict.items()
+               if value == max(dmn_dict.values())]
     if dmn_dict[max(dmn_out)] != 0.0:
         logger.info({'dmn': max(dmn_out), 'percent': dmn_dict[max(dmn_out)]})
         return {'dmn': max(dmn_out), 'percent': dmn_dict[max(dmn_out)]}
     else:
-        return {'dmn': 'DMN_NO_PND', 'percent': 0.0}
+        return {'dmn': 'NO_PND', 'percent': 0.0}

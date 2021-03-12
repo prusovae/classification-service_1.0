@@ -59,8 +59,8 @@ def card_number(param_dict=None):
                     count_match += 1
     percentage = round((count_match * 100) / len(values_list), 1)
 
-    return {'dmn': 'DMN_CARD_NUMBER', 'percent': percent_diff_acct_number(percentage, mdata_match_percent)} \
+    return {'dmn': 'DMN_CREDIT_CARD', 'percent': percent_diff_acct_number(percentage, mdata_match_percent)} \
         if percentage > min_conformance_percent \
-        else {'dmn': 'DMN_CARD_NUMBER', 'percent': 0.0}
+        else {'dmn': 'DMN_CREDIT_CARD', 'percent': 0.0}
 
 

@@ -39,5 +39,8 @@ def birth_date(param_dict=None):
         if len(match_values_list) != 0:
             count_match += 1
     percentage = round((count_match * 100) / len(values_list), 1)
-    return {'dmn': 'DMN_BIRTH_DATE', 'percent': percent_diff_birth_date(percentage, mdata_match_percent)} if md_pattern_birth_date(
-                field_name) and percentage > min_conformance_percent else {'dmn': 'DMN_BIRTH_DATE', 'percent': 0.0}
+    return {'dmn': 'DMN_BIRTH_DATE', 'percent':
+        percent_diff_birth_date(percentage, mdata_match_percent)} \
+        if md_pattern_birth_date(field_name) \
+           and percentage > min_conformance_percent \
+        else {'dmn': 'DMN_BIRTH_DATE', 'percent': 0.0}

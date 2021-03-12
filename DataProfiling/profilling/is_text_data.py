@@ -4,7 +4,7 @@ logger = logging.getLogger(__name__)
 def is_text_data(param_dict=None):
     logger.info("модуль запустился")
     import statistics
-    from profilling.email import email
+    from profilling.email_rule import email
     from profilling.url import url
     from profilling.password import password
     from profilling.first_name import first_name
@@ -17,8 +17,8 @@ def is_text_data(param_dict=None):
     from profilling.region import region
     from profilling.city import city
     from profilling.street import street
-    from profilling.account_number import acct_number
     from profilling.card_number import card_number
+    from profilling.account_number import acct_number
     from profilling.birth_date import birth_date
     from profilling.car_num import car_num
     from profilling.card_expire_date import expire_date
@@ -83,30 +83,15 @@ def is_text_data(param_dict=None):
     # Функции для группировки супер-атрибутов
     def group_fio_fio_param():
         group_percent_list = (dmn_dict.get('DMN_FIRST_NAME'),
-                              dmn_dict.get('DMN_MIDDLE_NAME'),
-                              dmn_dict.get('DMN_LAST_NAME'))
+                              dmn_dict.get('DMN_PATRONYMIC'),
+                              dmn_dict.get('DMN_SURNAME'))
         group_max_percent = max(group_percent_list)
         deviation = statistics.pstdev([value for value in group_percent_list if value is not None])
         return {'group_max_percent': group_max_percent, 'deviation': deviation, 'dmn_name': group_percent_list}
 
     def group_fio_first_last_param():
         group_percent_list = (dmn_dict.get('DMN_FIRST_NAME'),
-                              dmn_dict.get('DMN_LAST_NAME'))
-        group_max_percent = max(group_percent_list)
-        deviation = statistics.pstdev([value for value in group_percent_list if value is not None])
-        return {'group_max_percent': group_max_percent, 'deviation': deviation, 'dmn_name': group_percent_list}
-
-    def group_fio_fio_eng_param():
-        group_percent_list = (dmn_dict.get('DMN_FIRST_NAME_ENG'),
-                              dmn_dict.get('DMN_LAST_NAME_ENG'),
-                              dmn_dict.get('DMN_MIDDLE_NAME_ENG'))
-        group_max_percent = max(group_percent_list)
-        deviation = statistics.pstdev([value for value in group_percent_list if value is not None])
-        return {'group_max_percent': group_max_percent, 'deviation': deviation, 'dmn_name': group_percent_list}
-
-    def group_fio_first_last_eng_param():
-        group_percent_list = (dmn_dict.get('DMN_FIRST_NAME_ENG'),
-                              dmn_dict.get('DMN_LAST_NAME_ENG'))
+                              dmn_dict.get('DMN_SURNAME'))
         group_max_percent = max(group_percent_list)
         deviation = statistics.pstdev([value for value in group_percent_list if value is not None])
         return {'group_max_percent': group_max_percent, 'deviation': deviation, 'dmn_name': group_percent_list}
@@ -159,10 +144,6 @@ def is_text_data(param_dict=None):
                     return {'dmn': 'DMN_FIO', 'percent': max_percent}
                 if (group_fio_first_last_param()['deviation'] <= allowable_deviation) and group_fio_first_last_param()['group_max_percent'] == max_percent:
                     return {'dmn': 'DMN_FIO', 'percent': max_percent}
-                if (group_fio_fio_eng_param()['deviation'] <= allowable_deviation) and group_fio_fio_eng_param()['group_max_percent'] == max_percent:
-                    return {'dmn': 'DMN_FIO_ENG', 'percent': max_percent}
-                if (group_fio_first_last_eng_param()['deviation'] <= allowable_deviation) and group_fio_first_last_eng_param()['group_max_percent'] == max_percent:
-                    return {'dmn': 'DMN_FIO_ENG', 'percent': max_percent}
                 if (group_address_full_param()['deviation'] <= allowable_deviation) and group_address_full_param()['group_max_percent'] == max_percent:
                     return {'dmn': 'DMN_ADDRESS', 'percent': max_percent}
                 if (group_address_street_city_country_param()['deviation'] <= allowable_deviation) and group_address_street_city_country_param()['group_max_percent'] == max_percent:
@@ -181,12 +162,6 @@ def is_text_data(param_dict=None):
                 if (group_fio_first_last_param()['deviation'] <= allowable_deviation) and group_fio_first_last_param()['group_max_percent'] == max_percent:
                     if len(group_fio_first_last_param()['dmn_name']) == len(percent_list):
                         return {'dmn': 'DMN_FIO', 'percent': max_percent}
-                if (group_fio_fio_eng_param()['deviation'] <= allowable_deviation) and group_fio_fio_eng_param()['group_max_percent'] == max_percent:
-                    if len(group_fio_fio_eng_param()['dmn_name']) == len(percent_list):
-                        return {'dmn': 'DMN_FIO_ENG', 'percent': max_percent}
-                if (group_fio_first_last_eng_param()['deviation'] <= allowable_deviation) and group_fio_first_last_eng_param()['group_max_percent'] == max_percent:
-                    if len(group_fio_first_last_eng_param()['dmn_name']) == len(percent_list):
-                        return {'dmn': 'DMN_FIO_ENG', 'percent': max_percent}
                 if (group_address_full_param()['deviation'] <= allowable_deviation) and group_address_full_param()['group_max_percent'] == max_percent:
                     if len(group_address_full_param()['dmn_name']) == len(percent_list):
                         return {'dmn': 'DMN_ADDRESS', 'percent': max_percent}
@@ -200,8 +175,8 @@ def is_text_data(param_dict=None):
                     if len(group_address_street_city_param()['dmn_name']) == len(percent_list):
                         return {'dmn': 'DMN_ADDRESS', 'percent': max_percent}
                 # Если не нашли супер атрибут, то DMN_COMMENT
-                return {'dmn': 'DMN_COMMENT', 'percent': max(percent_list)}
+                return {'dmn': 'DMN_COMPLEX', 'percent': max(percent_list)}
     else:
-        return {'dmn': 'DMN_NO_PND', 'percent': 0.0}
+        return {'dmn': 'NO_PND', 'percent': 0.0}
 #todo Если нет совпадений, сейчас возвращается None, исправить на DMN_NO_PND
 #todo Заменить 100500 return'ов на (result =) в конце один return result
